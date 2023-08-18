@@ -22,8 +22,16 @@
                         <h2 class="text-xl font-bold">{{$tweet->user->name}}</h2>
                         <p>{{$tweet->content}}</p>
                         <div class="text-end">
-                            <a href="{{route('tweets.edit', $tweet->id)}}" class="link link-hover text-blue-400">Edit</a>
-
+                           @can('update', $tweet)
+                           <a href="{{route('tweets.edit', $tweet->id)}}" class="link link-hover text-blue-400">Edit</a>
+                           @endcan
+                            @can('delete', $tweet)
+                            <form action="{{route('tweets.destroy', $tweet->id)}}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-error btn-sm">Hapus</button>
+                            </form>
+                            @endcan
                             <span class="text-sm">{{$tweet->created_at->diffForHumans()}}</span>
                     </div>
                 </div>
